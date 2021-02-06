@@ -75,14 +75,16 @@ io.on('connection', socket => {
       
     })
 
-    socket.on('user-start-transmitting', ()=> {
-      socket.to(roomId).broadcast.emit('create-notification', {notification:`${name} - Está transmitindo`})
+    socket.on('sharing-screen', ({isSharingScreen})=> {
+      if(isSharingScreen){
+        socket.to(roomId).broadcast.emit('create-notification', {notification:`${name} - Está transmitindo`})
+      }else{
+        socket.to(roomId).broadcast.emit('create-notification', {notification:`${name} - Parou de transmitir`})
+      }
+
+      socket.to(roomId).broadcast.emit('toggle-transmitting', {userId: `${userId}`, isSharingScreen})
     })
 
-    socket.on('user-stop-transmitting', ()=> {
-      socket.to(roomId).broadcast.emit('create-notification', {notification:`${name} - Parou de transmitir`})
-      io.to(roomId).emit('remove-shared-screen', {userId})
-    })
   })
 })
 
