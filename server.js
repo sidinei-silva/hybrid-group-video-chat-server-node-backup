@@ -24,10 +24,10 @@ app.use('/peerjs', peerServer);
 
 
 io.on('connection', socket => {
-  socket.on('join-room', (roomId, userId, name) => {
+  socket.on('join-room', (roomId, userId, name, userIsAdmin) => {
     socket.join(roomId)
 
-    socket.to(roomId).broadcast.emit('user-connected', {userId, userName: name} )
+    socket.to(roomId).broadcast.emit('user-connected', {userId, userName: name, userIsAdmin} )
     
     socket.to(roomId).broadcast.emit('create-notification', { notification:`${name} - Entrou no chat`})
     
