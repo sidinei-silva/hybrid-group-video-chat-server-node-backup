@@ -70,6 +70,9 @@ io.on('connection', socket => {
       socket.to(roomId).broadcast.emit('create-notification', {notification:`${name} - Rejeitou a solicitação de câmera`})
     });
 
+    socket.on('cancel-request-cam', ({userId}) => {
+      io.to(roomId).emit('canceled-request-cam', {userId: `${userId}`})
+    });
 
     socket.on('disable-cam', ({userId, isDisableCam}) => {      
       socket.to(roomId).broadcast.emit('toggle-cam', {userId: `${userId}`, isDisableCam})
